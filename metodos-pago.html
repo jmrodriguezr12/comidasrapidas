@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Métodos de Pago</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .acciones {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-width: 400px;
+      margin: auto;
+    }
+
+    .acciones button {
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .nequi {
+      background-color: #6f2c91;
+      color: white;
+    }
+
+    .bancolombia {
+      background-color: #ffcc00;
+      color: black;
+    }
+
+    .movii {
+      background-color: #e91e63;
+      color: white;
+    }
+
+    .volver {
+      background-color: #2196f3;
+      color: white;
+    }
+
+    .cuenta-info {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .copiable {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 8px 0;
+    }
+
+    .copiable button {
+      padding: 4px 10px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      background-color: #ddd;
+      cursor: pointer;
+    }
+
+    .copiable button:hover {
+      background-color: #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>💳 Selecciona tu método de pago</h2>
+
+  <div class="acciones">
+    <button class="nequi" onclick="mostrarCuenta('nequi')">💰 Pagar por Nequi</button>
+    <button class="bancolombia" onclick="mostrarCuenta('bancolombia')">🏦 Pagar por Bancolombia</button>
+    <button class="movii" onclick="mostrarCuenta('movii')">📲 Pagar por Movii</button>
+    <button class="volver" onclick="window.location.href='index.html'">⬅️ Volver al menú</button>
+  </div>
+
+  <div id="infoCuenta"></div>
+
+  <script>
+    function copiarTexto(texto) {
+      navigator.clipboard.writeText(texto).then(() => {
+        alert(`📋 Copiado: ${texto}`);
+      });
+    }
+
+    function mostrarCuenta(metodo) {
+      const contenedor = document.getElementById('infoCuenta');
+      let contenido = "";
+
+      switch (metodo) {
+        case 'nequi':
+          contenido = `
+            <strong>💰 Nequi</strong><br>
+            <div class="copiable">
+              Número: <strong>3248088481</strong>
+              <button onclick="copiarTexto('3248088481')">Copiar</button>
+            </div>
+            Titular: Jose Rodriguez<br>
+            Banco: Nequi Colombia<br>
+            Referencia: Tu número de pedido o nombre
+          `;
+          break;
+        case 'bancolombia':
+          contenido = `
+            <strong>🏦 Bancolombia</strong><br>
+            <div class="copiable">
+              Cuenta de ahorros: <strong>12345678901</strong>
+              <button onclick="copiarTexto('12345678901')">Copiar</button>
+            </div>
+            Titular: Juan Pérez<br>
+            Cédula: 12345678<br>
+            Banco: Bancolombia<br>
+            Referencia: Tu número de pedido o nombre
+          `;
+          break;
+        case 'movii':
+          contenido = `
+            <strong>📲 Movii</strong><br>
+            <div class="copiable">
+              Número: <strong>3009876543</strong>
+              <button onclick="copiarTexto('3009876543')">Copiar</button>
+            </div>
+            Titular: Juan Pérez<br>
+            Banco: Movii Colombia<br>
+            Referencia: Tu número de pedido o nombre
+          `;
+          break;
+      }
+
+      contenedor.innerHTML = `<div class="cuenta-info">${contenido}</div>`;
+    }
+  </script>
+
+</body>
+</html>

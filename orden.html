@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Resumen de Orden</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      padding: 20px;
+    }
+
+    .resumen {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    li {
+      margin-bottom: 10px;
+      font-size: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .item-nombre {
+      flex: 1;
+      text-align: left;
+    }
+
+    .item-precio {
+      flex: 0;
+      text-align: right;
+      margin-left: 10px;
+    }
+
+    .item-eliminar {
+      margin-left: 15px;
+      color: red;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .total {
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .formulario {
+      margin-top: 30px;
+    }
+
+    .formulario input,
+    .formulario textarea,
+    .formulario select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .acciones {
+      margin-top: 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .acciones button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .volver {
+      background-color: #2196f3;
+      color: white;
+    }
+
+    .confirmar {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .whatsapp {
+      background-color: #25d366;
+      color: white;
+    }
+
+    .telegram {
+      background-color: #0088cc;
+      color: white;
+    }
+
+    .cuenta-info {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: 20px auto;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="resumen">
+    <h2>🧾 Tu orden</h2>
+    <ul id="listaOrden"></ul>
+    <div class="total" id="totalOrden">Total: Cop. 0,00</div>
+
+    <div class="formulario">
+      <input type="text" id="direccion" placeholder="📍 Dirección de entrega" />
+      <input type="tel" id="telefono" placeholder="📞 Teléfono de contacto" />
+      <textarea id="comentario" rows="3" placeholder="💬 Comentario adicional (opcional)"></textarea>
+      <select id="metodoPago" onchange="mostrarCuenta()">
+        <option value="">💳 Selecciona método de pago</option>
+        <option value="Nequi">Nequi</option>
+        <option value="Bancolombia">Bancolombia</option>
+        <option value="Movii">Movii</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="infoCuenta"></div>
+
+  <div class="acciones">
+    <button class="confirmar" onclick="confirmarPedido()">✅ Confirmar pedido</button>
+    <button class="whatsapp" onclick="enviarMensaje('whatsapp')">📲 Enviar por WhatsApp</button>
+    <button class="telegram" onclick="enviarMensaje('telegram')">📨 Enviar por Telegram</button>
+    <button class="volver" onclick="window.location.href='index.html'">⬅️ Volver al menú</button>
+  </div>
+
+  <script>
+    let orden = JSON.parse(localStorage.getItem('ordenGuardada')) || {};
+    const lista = document.getElementById('listaOrden');
+    const total = document.getElementById('totalOrden');
+
+    function renderizarOrden() {
+      lista.innerHTML = '';
+      let suma = 0;
+
+      for (const [nombre, item] of Object.entries(orden)) {
+        const subtotal = item.cantidad * item.precio;
+        suma += subtotal;
+
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span class="item-nombre">${item.cantidad} x ${nombre}</span>
+          <span class="item-precio">Cop. ${subtotal.toFixed(3)}</span>
+          <span class="item-eliminar" onclick="eliminarItem('${nombre}')">🗑️</span>
+        `;
+        lista.appendChild(li);
+      }
+
+      total.textContent = `Total: Cop. ${suma.toFixed(3)}`;
+      localStorage.setItem('ordenGuardada', JSON.stringify(orden));
+    }
+
+    function eliminarItem(nombre) {
+      delete orden[nombre];
+      renderizarOrden();
+    }
+
+    function mostrarCuenta() {
+      const metodo = document.getElementById('metodoPago').value;
+      const contenedor = document.getElementById('infoCuenta');
+      let contenido = "";
+
+      switch (metodo) {
+        case 'Nequi':
+          contenido = `
+            <div class="cuenta-info">
+              <strong>💰 Nequi</strong><br>
+              Número: <strong>3001234567</strong><br>
+              Titular: Juan Pérez<br>
+              Banco: Nequi Colombia<br>
+              Referencia: Tu número de pedido o nombre
+            </div>`;
+          break;
+        case 'Bancolombia':
+          contenido = `
+            <div class="cuenta-info">
+              <strong>🏦 Bancolombia</strong><br>
+              Cuenta de ahorros: <strong>12345678901</strong><br>
+              Titular: Juan Pérez<br>
+              Cédula: 12345678<br>
+              Banco: Bancolombia<br>
+              Referencia: Tu número de pedido o nombre
+            </div>`;
+          break;
+        case 'Movii':
+          contenido = `
+            <div class="cuenta-info">
+              <strong>📲 Movii</strong><br>
+              Número: <strong>3009876543</strong><br>
+              Titular: Juan Pérez<br>
+              Banco: Movii Colombia<br>
+              Referencia: Tu número de pedido o nombre
+            </div>`;
+          break;
+        default:
+          contenido = "";
+      }
+
+      contenedor.innerHTML = contenido;
+    }
+
+    function confirmarPedido() {
+      const direccion = document.getElementById('direccion').value.trim();
+      const telefono = document.getElementById('telefono').value.trim();
+      const metodo = document.getElementById('metodoPago').value;
+
+      if (!direccion || !telefono || !metodo) {
+        alert("Por favor, completa la dirección, teléfono y método de pago.");
+        return;
+      }
+
+      if (Object.keys(orden).length === 0) {
+        alert("Tu orden está vacía.");
+        return;
+      }
+
+      alert("✅ Pedido confirmado. Ahora puedes enviarlo por WhatsApp o Telegram.");
+    }
+
+    function enviarMensaje(plataforma) {
+      const direccion = document.getElementById('direccion').value.trim();
+      const telefono = document.getElementById('telefono').value.trim();
+      const comentario = document.getElementById('comentario').value.trim();
+      const metodo = document.getElementById('metodoPago').value;
+
+      if (!direccion || !telefono || !metodo) {
+        alert("Por favor, completa la dirección, teléfono y método de pago.");
+        return;
+      }
+
+      if (Object.keys(orden).length === 0) {
+        alert("Tu orden está vacía.");
+        return;
+      }
+
+      let mensaje = "🧾 Mi orden:\n";
+      let total = 0;
+
+      for (const [nombre, item] of Object.entries(orden)) {
+        const subtotal = item.cantidad * item.precio;
+        total += subtotal;
+        mensaje += `• ${item.cantidad} x ${nombre} = Cop. ${subtotal.toFixed(3)}\n`;
+      }
+
+            mensaje += `\n💳 Método de pago: ${metodo}`;
+      mensaje += `\n\nTotal: Cop. ${total.toFixed(3)}`;
+
+      if (plataforma === 'whatsapp') {
+        const url = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
+        window.open(url, '_blank');
+      } else if (plataforma === 'telegram') {
+        const url = `https://t.me/share/url?url=https://tusitio.com&text=${encodeURIComponent(mensaje)}`;
+        window.open(url, '_blank');
+      }
+    }
+
+    renderizarOrden();
+  </script>
