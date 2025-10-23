@@ -129,8 +129,8 @@
       <div class="notificacion">1</div>
       <img src="./img/comboperrocaliente.jpg" alt="Hamburguesa">
       <div class="titulo">combo perro caliente + papas fritas + refresco 150ml</div>
-      <div class="precio" data-precio="15.000">Cop. 15.000</div>
-      <div class="descripcion">Pan artesanal, carne 100% res, lechuga y tomate.</div>
+      <div class="precio" data-precio="0">Cop: 0</div>
+      <div class="descripcion">No disponible.</div>
       <div class="acciones">
         <div class="contador">
           <button onclick="cambiarCantidad(this, -1)">−</button>
@@ -146,7 +146,7 @@
       <img src="./img/hamburguesa.jpg" alt="Hamburguesa">
       <div class="titulo">Hamburguesa Clásica</div>
       <div class="precio" data-precio="10.000">Cop. 10.000</div>
-      <div class="descripcion">Pan artesanal, carne 100% res, lechuga y tomate.</div>
+      <div class="descripcion"> lechuga, carne Molida 90g,Queso, jamon, huevo, cebolla y tomate (salsas).</div>
       <div class="acciones">
         <div class="contador">
           <button onclick="cambiarCantidad(this, -1)">−</button>
@@ -161,7 +161,7 @@
       <div class="notificacion">1</div>
       <img src="./img/papasfritas.jpg" alt="Hamburguesa">
       <div class="titulo">Paitas fritas</div>
-      <div class="precio" data-precio="2.000">Cop. 2.000</div>
+      <div class="precio" data-precio="3.000">Cop. 3.000</div>
       <div class="descripcion">Papas Fritas (Porcion)</div>
       <div class="acciones">
         <div class="contador">
@@ -172,7 +172,40 @@
         <button class="btn-agregar" onclick="activarContador(this)">Agregar</button>
       </div>
     </div>
-  </div>
+
+        <div class="producto">
+      <div class="notificacion">1</div>
+      <img src="./img/perrocaliente.jpg" alt="Hamburguesa">
+      <div class="titulo">Perro caliente</div>
+      <div class="precio" data-precio="4.000">Cop. 4.000</div>
+      <div class="descripcion">Salchicha delishick, ensalada o cebolla, papitas, queso rallado (salsas)</div>
+      <div class="acciones">
+        <div class="contador">
+          <button onclick="cambiarCantidad(this, -1)">−</button>
+          <input type="text" class="cantidad" value="1" readonly>
+          <button onclick="cambiarCantidad(this, 1)">+</button>
+        </div>
+        <button class="btn-agregar" onclick="activarContador(this)">Agregar</button>
+      </div>
+    </div>
+
+        <div class="producto">
+      <div class="notificacion">1</div>
+      <img src="./img/regrescolata.png" alt="Hamburguesa">
+      <div class="titulo">refresco lata</div>
+      <div class="precio" data-precio="4.000">Cop. 4.000</div>
+      <div class="descripcion"> No disponible. </div>
+      <div class="acciones">
+        <div class="contador">
+          <button onclick="cambiarCantidad(this, -1)">−</button>
+          <input type="text" class="cantidad" value="1" readonly>
+          <button onclick="cambiarCantidad(this, 1)">+</button>
+        </div>
+        <button class="btn-agregar" onclick="activarContador(this)">Agregar</button>
+      </div>
+    </div>
+
+ </div>
 
   <div class="ver-orden">
     <button id="btnVerOrden" onclick="verOrden()">🧾 Ver orden</button>
@@ -266,6 +299,7 @@ function verificarOrden() {
 </body>
 
 </html>
+
 
 
 
