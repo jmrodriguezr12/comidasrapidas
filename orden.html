@@ -230,23 +230,38 @@
       contenedor.innerHTML = contenido;
     }
 
-    function confirmarPedido() {
-      const direccion = document.getElementById('direccion').value.trim();
-      const telefono = document.getElementById('telefono').value.trim();
-      const metodo = document.getElementById('metodoPago').value;
+function confirmarPedido() {
+  const direccion = document.getElementById('direccion').value.trim();
+  const telefono = document.getElementById('telefono').value.trim();
+  const metodo = document.getElementById('metodoPago').value;
 
-      if (!direccion || !telefono || !metodo) {
-        alert("Por favor, completa la dirección, teléfono y método de pago.");
-        return;
-      }
+  if (!direccion || !telefono || !metodo) {
+    alert("Por favor, completa la dirección, teléfono y método de pago.");
+    return;
+  }
 
-      if (Object.keys(orden).length === 0) {
-        alert("Tu orden está vacía.");
-        return;
-      }
+  if (Object.keys(orden).length === 0) {
+    alert("Tu orden está vacía.");
+    return;
+  }
 
-      alert("✅ Pedido confirmado. Ahora puedes enviarlo por WhatsApp o Telegram.");
-    }
+  let referencia = "";
+
+  if (metodo === "Nequi") {
+    referencia = prompt("📲 Ingresa el número de referencia de la transacción en Nequi:");
+  } else if (metodo === "Bancolombia") {
+    referencia = prompt("🏦 Ingresa el número de baucher o referencia de la transacción en Bancolombia:");
+  } else {
+    referencia = prompt("💳 Ingresa el número de referencia de la transacción:");
+  }
+
+  if (!referencia || referencia.trim() === "") {
+    alert("⚠️ Debes ingresar el número de referencia para confirmar el pedido.");
+    return;
+  }
+
+  alert(`✅ Pedido confirmado con referencia: ${referencia}`);
+}
 
     function enviarMensaje(plataforma) {
       const direccion = document.getElementById('direccion').value.trim();
@@ -288,3 +303,4 @@
     renderizarOrden();
 
   </script>
+
