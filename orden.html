@@ -93,10 +93,25 @@
       cursor: pointer;
     }
 
-    .volver { background-color: #2196f3; color: white; }
-    .confirmar { background-color: #4caf50; color: white; }
-    .whatsapp { background-color: #25d366; color: white; }
-    .telegram { background-color: #0088cc; color: white; }
+    .volver {
+      background-color: #2196f3;
+      color: white;
+    }
+
+    .confirmar {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .whatsapp {
+      background-color: #25d366;
+      color: white;
+    }
+
+    .telegram {
+      background-color: #0088cc;
+      color: white;
+    }
 
     .cuenta-info {
       margin-top: 20px;
@@ -108,44 +123,6 @@
       margin: 20px auto;
       font-size: 16px;
       line-height: 1.5;
-    }
-
-    /* Modal */
-    #modalReferencia {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 1000;
-    }
-
-    #modalContenido {
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 400px;
-      margin: 100px auto;
-      position: relative;
-    }
-
-    #modalContenido img {
-      width: 100%;
-      border-radius: 5px;
-      margin-top: 10px;
-    }
-
-    #modalContenido input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    #modalContenido button {
-      margin-top: 15px;
-      margin-right: 10px;
     }
   </style>
 </head>
@@ -173,29 +150,13 @@
 
   <div class="acciones">
     <button class="confirmar" onclick="confirmarPedido()">✅ Confirmar pedido</button>
-    <button onclick="abrirModalReferencia()">🔍 Ingresar referencia de transferencia</button>
     <button class="whatsapp" onclick="enviarMensaje('whatsapp')">📲 Enviar por WhatsApp</button>
     <button class="telegram" onclick="enviarMensaje('telegram')">📨 Enviar por Telegram</button>
     <button class="volver" onclick="window.location.href='index.html'">⬅️ Volver al menú</button>
   </div>
 
-  <!-- Modal -->
-  <div id="modalReferencia">
-    <div id="modalContenido">
-      <h3>🔢 Ingresa número de referencia</h3>
-      <input type="text" id="referenciaTransferencia" placeholder="Ej. 1234567890" />
-      <img src="https://via.placeholder.com/300x150?text=Ejemplo+de+comprobante" alt="Ejemplo de comprobante" />
-      <div style="text-align:right;">
-        <button onclick="guardarReferencia()">Guardar</button>
-        <button onclick="cerrarModal()">Cancelar</button>
-      </div>
-    </div>
-  </div>
-
   <script>
     let orden = JSON.parse(localStorage.getItem('ordenGuardada')) || {};
-    let referencia = "";
-
     const lista = document.getElementById('listaOrden');
     const total = document.getElementById('totalOrden');
 
@@ -238,7 +199,7 @@
               Número: <strong>3248088481</strong><br>
               Titular: Jose Rodriguez<br>
               Banco: Nequi Colombia<br>
-              Referencia: N° del pago en Nequi
+              Referencia:  N° del pago en Nequi
             </div>`;
           break;
         case 'Bancolombia':
@@ -267,4 +228,63 @@
       }
 
       contenedor.innerHTML = contenido;
-   
+    }
+
+    function confirmarPedido() {
+      const direccion = document.getElementById('direccion').value.trim();
+      const telefono = document.getElementById('telefono').value.trim();
+      const metodo = document.getElementById('metodoPago').value;
+
+      if (!direccion || !telefono || !metodo) {
+        alert("Por favor, completa la dirección, teléfono y método de pago.");
+        return;
+      }
+
+      if (Object.keys(orden).length === 0) {
+        alert("Tu orden está vacía.");
+        return;
+      }
+
+      alert("✅ Pedido confirmado. Ahora puedes enviarlo por WhatsApp o Telegram.");
+    }
+
+    function enviarMensaje(plataforma) {
+      const direccion = document.getElementById('direccion').value.trim();
+      const telefono = document.getElementById('telefono').value.trim();
+      const comentario = document.getElementById('comentario').value.trim();
+      const metodo = document.getElementById('metodoPago').value;
+
+      if (!direccion || !telefono || !metodo) {
+        alert("Por favor, completa la dirección, teléfono y método de pago.");
+        return;
+      }
+
+      if (Object.keys(orden).length === 0) {
+        alert("Tu orden está vacía.");
+        return;
+      }
+
+      let mensaje = "🧾 Mi orden:\n";
+      let total = 0;
+
+      for (const [nombre, item] of Object.entries(orden)) {
+        const subtotal = item.cantidad * item.precio;
+        total += subtotal;
+        mensaje += `• ${item.cantidad} x ${nombre} = Cop. ${subtotal.toFixed(3)}\n`;
+      }
+
+            mensaje += `\n💳 Método de pago: ${metodo}`;
+      mensaje += `\n\nTotal: Cop. ${total.toFixed(3)}`;
+
+      if (plataforma === 'whatsapp') {
+        const url = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
+        window.open(url, '_blank');
+      } else if (plataforma === 'telegram') {
+        const url = `https://t.me/share/url?url=https://tusitio.com&text=${encodeURIComponent(mensaje)}`;
+        window.open(url, '_blank');
+      }
+    }
+
+    renderizarOrden();
+
+  </script>
