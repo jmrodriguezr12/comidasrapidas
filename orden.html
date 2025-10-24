@@ -233,6 +233,7 @@
 function confirmarPedido() {
   const direccion = document.getElementById('direccion').value.trim();
   const telefono = document.getElementById('telefono').value.trim();
+  const comentario = document.getElementById('comentario').value.trim();
   const metodo = document.getElementById('metodoPago').value;
 
   if (!direccion || !telefono || !metodo) {
@@ -260,47 +261,31 @@ function confirmarPedido() {
     return;
   }
 
-  alert(`✅ Pedido confirmado con referencia: ${referencia}`);
+  // Construir el mensaje
+  let mensaje = "🧾 Mi orden:\n";
+  let total = 0;
+
+  for (const [nombre, item] of Object.entries(orden)) {
+    const subtotal = item.cantidad * item.precio;
+    total += subtotal;
+    mensaje += `• ${item.cantidad} x ${nombre} = Cop. ${subtotal.toFixed(3)}\n`;
+  }
+
+  mensaje += `\n💳 Método de pago: ${metodo}`;
+  mensaje += `\n🔢 Referencia: ${referencia}`;
+  mensaje += `\n📍 Dirección: ${direccion}`;
+  mensaje += `\n📞 Teléfono: ${telefono}`;
+  if (comentario) {
+    mensaje += `\n💬 Comentario: ${comentario}`;
+  }
+  mensaje += `\n\nTotal: Cop. ${total.toFixed(3)}`;
+
+  // Enviar por WhatsApp
+  const url = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
+  window.open(url, '_blank');
 }
-
-    function enviarMensaje(plataforma) {
-      const direccion = document.getElementById('direccion').value.trim();
-      const telefono = document.getElementById('telefono').value.trim();
-      const comentario = document.getElementById('comentario').value.trim();
-      const metodo = document.getElementById('metodoPago').value;
-
-      if (!direccion || !telefono || !metodo) {
-        alert("Por favor, completa la dirección, teléfono y método de pago.");
-        return;
-      }
-
-      if (Object.keys(orden).length === 0) {
-        alert("Tu orden está vacía.");
-        return;
-      }
-
-      let mensaje = "🧾 Mi orden:\n";
-      let total = 0;
-
-      for (const [nombre, item] of Object.entries(orden)) {
-        const subtotal = item.cantidad * item.precio;
-        total += subtotal;
-        mensaje += `• ${item.cantidad} x ${nombre} = Cop. ${subtotal.toFixed(3)}\n`;
-      }
-
-            mensaje += `\n💳 Método de pago: ${metodo}`;
-      mensaje += `\n\nTotal: Cop. ${total.toFixed(3)}`;
-
-      if (plataforma === 'whatsapp') {
-        const url = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
-        window.open(url, '_blank');
-      } else if (plataforma === 'telegram') {
-        const url = `https://t.me/share/url?url=https://tusitio.com&text=${encodeURIComponent(mensaje)}`;
-        window.open(url, '_blank');
-      }
-    }
-
     renderizarOrden();
 
   </script>
+
 
