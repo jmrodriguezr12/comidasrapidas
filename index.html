@@ -215,6 +215,22 @@
         <button class="btn-agregar" onclick="activarContador(this)">Agregar</button>
       </div>
     </div>
+
+                <div class="producto">
+      <div class="notificacion">1</div>
+      <img src="./img/perrocaliente.jpg" alt="Hamburguesa">
+      <div class="titulo">Perro Caliente</div>
+      <div class="precio" data-precio="4.000">Cop. 4.000</div>
+      <div class="descripcion">Normal</div>
+      <div class="acciones">
+        <div class="contador">
+          <button onclick="cambiarCantidad(this, -1)">−</button>
+          <input type="text" class="cantidad" value="1" readonly>
+          <button onclick="cambiarCantidad(this, 1)">+</button>
+        </div>
+        <button class="btn-agregar" onclick="activarContador(this)">Agregar</button>
+      </div>
+    </div>
     
   </div>
 
@@ -309,6 +325,7 @@ function verificarOrden() {
 
 </body>
 </html>
+
 
 
 
