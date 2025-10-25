@@ -150,8 +150,6 @@
 
   <div class="acciones">
     <button class="confirmar" onclick="confirmarPedido()">✅ Confirmar pedido</button>
-    <button class="whatsapp" onclick="enviarMensaje('whatsapp')">📲 Enviar por WhatsApp</button>
-    <button class="telegram" onclick="enviarMensaje('telegram')">📨 Enviar por Telegram</button>
     <button class="volver" onclick="window.location.href='index.html'">⬅️ Volver al menú</button>
   </div>
 
@@ -250,18 +248,12 @@ function confirmarPedido() {
 
   if (metodo === "Nequi") {
     referencia = prompt("📲 Ingresa el número de referencia de la transacción en Nequi:");
-  } else if (metodo === "Bancolombia") {
-    referencia = prompt("🏦 Ingresa el número de baucher o referencia de la transacción en Bancolombia:");
-  } else {
-    referencia = prompt("💳 Ingresa el número de referencia de la transacción:");
+    if (!referencia || referencia.trim() === "") {
+      alert("⚠️ Debes ingresar el número de referencia para confirmar el pedido.");
+      return;
+    }
   }
 
-  if (!referencia || referencia.trim() === "") {
-    alert("⚠️ Debes ingresar el número de referencia para confirmar el pedido.");
-    return;
-  }
-
-  // Construir el mensaje
   let mensaje = "🧾 Mi orden:\n";
   let total = 0;
 
@@ -272,7 +264,9 @@ function confirmarPedido() {
   }
 
   mensaje += `\n💳 Método de pago: ${metodo}`;
-  mensaje += `\n🔢 Referencia: ${referencia}`;
+  if (referencia) {
+    mensaje += `\n🔢 Referencia: ${referencia}`;
+  }
   mensaje += `\n📍 Dirección: ${direccion}`;
   mensaje += `\n📞 Teléfono: ${telefono}`;
   if (comentario) {
@@ -280,10 +274,11 @@ function confirmarPedido() {
   }
   mensaje += `\n\nTotal: Cop. ${total.toFixed(3)}`;
 
-  // Enviar por WhatsApp
-  const url = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
+  // Enviar directamente al número de WhatsApp 3248088481
+  const url = `https://wa.me/573248088481?text=${encodeURIComponent(mensaje)}`;
   window.open(url, '_blank');
 }
 
-    renderizarOrden();
+ renderizarOrden();
   </script>
+
