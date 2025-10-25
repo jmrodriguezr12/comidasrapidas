@@ -196,31 +196,31 @@
           contenido = `
             <div class="cuenta-info">
               <strong>💰 Nequi</strong><br>
-              Número: <strong>3248088481</strong><br>
-              Titular: Jose Rodriguez<br>
+              Número: <strong>3001234567</strong><br>
+              Titular: Juan Pérez<br>
               Banco: Nequi Colombia<br>
-              Referencia:  N° del pago en Nequi
+              Referencia: Tu número de pedido o nombre
             </div>`;
           break;
         case 'Bancolombia':
           contenido = `
             <div class="cuenta-info">
               <strong>🏦 Bancolombia</strong><br>
-              Cuenta de ahorros: <strong>-</strong><br>
-              Titular: ... <br>
-              Cédula: ... <br>
+              Cuenta de ahorros: <strong>12345678901</strong><br>
+              Titular: Juan Pérez<br>
+              Cédula: 12345678<br>
               Banco: Bancolombia<br>
-              Referencia: N° baucher del banco
+              Referencia: Tu número de pedido o nombre
             </div>`;
           break;
         case 'Movii':
           contenido = `
             <div class="cuenta-info">
               <strong>📲 Movii</strong><br>
-              Número: <strong>...</strong><br>
-              Titular: sin datos<br>
+              Número: <strong>3009876543</strong><br>
+              Titular: Juan Pérez<br>
               Banco: Movii Colombia<br>
-              Referencia: N° de transferencia Movii
+              Referencia: Tu número de pedido o nombre
             </div>`;
           break;
         default:
@@ -230,61 +230,60 @@
       contenedor.innerHTML = contenido;
     }
 
-    function confirmarPedido() {
-      const direccion = document.getElementById('direccion').value.trim();
-      const telefono = document.getElementById('telefono').value.trim();
-      const metodo = document.getElementById('metodoPago').value;
+function confirmarPedido() {
+  const direccion = document.getElementById('direccion').value.trim();
+  const telefono = document.getElementById('telefono').value.trim();
+  const comentario = document.getElementById('comentario').value.trim();
+  const metodo = document.getElementById('metodoPago').value;
 
-      if (!direccion || !telefono || !metodo) {
-        alert("Por favor, completa la dirección, teléfono y método de pago.");
-        return;
-      }
+  if (!direccion || !telefono || !metodo) {
+    alert("Por favor, completa la dirección, teléfono y método de pago.");
+    return;
+  }
 
-      if (Object.keys(orden).length === 0) {
-        alert("Tu orden está vacía.");
-        return;
-      }
+  if (Object.keys(orden).length === 0) {
+    alert("Tu orden está vacía.");
+    return;
+  }
 
-      alert("✅ Pedido confirmado. Ahora puedes enviarlo por WhatsApp o Telegram.");
-    }
+  let referencia = "";
 
-    function enviarMensaje(plataforma) {
-      const direccion = document.getElementById('direccion').value.trim();
-      const telefono = document.getElementById('telefono').value.trim();
-      const comentario = document.getElementById('comentario').value.trim();
-      const metodo = document.getElementById('metodoPago').value;
+  if (metodo === "Nequi") {
+    referencia = prompt("📲 Ingresa el número de referencia de la transacción en Nequi:");
+  } else if (metodo === "Bancolombia") {
+    referencia = prompt("🏦 Ingresa el número de baucher o referencia de la transacción en Bancolombia:");
+  } else {
+    referencia = prompt("💳 Ingresa el número de referencia de la transacción:");
+  }
 
-      if (!direccion || !telefono || !metodo) {
-        alert("Por favor, completa la dirección, teléfono y método de pago.");
-        return;
-      }
+  if (!referencia || referencia.trim() === "") {
+    alert("⚠️ Debes ingresar el número de referencia para confirmar el pedido.");
+    return;
+  }
 
-      if (Object.keys(orden).length === 0) {
-        alert("Tu orden está vacía.");
-        return;
-      }
+  // Construir el mensaje
+  let mensaje = "🧾 Mi orden:\n";
+  let total = 0;
 
-      let mensaje = "🧾 Mi orden:\n";
-      let total = 0;
+  for (const [nombre, item] of Object.entries(orden)) {
+    const subtotal = item.cantidad * item.precio;
+    total += subtotal;
+    mensaje += `• ${item.cantidad} x ${nombre} = Cop. ${subtotal.toFixed(3)}\n`;
+  }
 
-      for (const [nombre, item] of Object.entries(orden)) {
-        const subtotal = item.cantidad * item.precio;
-        total += subtotal;
-        mensaje += `• ${item.cantidad} x ${nombre} = Cop. ${subtotal.toFixed(3)}\n`;
-      }
+  mensaje += `\n💳 Método de pago: ${metodo}`;
+  mensaje += `\n🔢 Referencia: ${referencia}`;
+  mensaje += `\n📍 Dirección: ${direccion}`;
+  mensaje += `\n📞 Teléfono: ${telefono}`;
+  if (comentario) {
+    mensaje += `\n💬 Comentario: ${comentario}`;
+  }
+  mensaje += `\n\nTotal: Cop. ${total.toFixed(3)}`;
 
-            mensaje += `\n💳 Método de pago: ${metodo}`;
-      mensaje += `\n\nTotal: Cop. ${total.toFixed(3)}`;
-
-      if (plataforma === 'whatsapp') {
-        const url = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
-        window.open(url, '_blank');
-      } else if (plataforma === 'telegram') {
-        const url = `https://t.me/share/url?url=https://tusitio.com&text=${encodeURIComponent(mensaje)}`;
-        window.open(url, '_blank');
-      }
-    }
+  // Enviar por WhatsApp
+  const url = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
+  window.open(url, '_blank');
+}
 
     renderizarOrden();
-
   </script>
