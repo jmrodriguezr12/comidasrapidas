@@ -246,15 +246,14 @@ function confirmarPedido() {
 
   let referencia = "";
 
-  if (metodo !== "Efectivo") {
-    if (metodo === "Nequi") {
-      referencia = prompt("📲 Ingresa el número de referencia de la transacción en Nequi:");
-    } else if (metodo === "Bancolombia") {
-      referencia = prompt("🏦 Ingresa el número de baucher o referencia de la transacción en Bancolombia:");
-    } else {
-      referencia = prompt("💳 Ingresa el número de referencia de la transacción:");
+  if (metodo === "Nequi") {
+    referencia = prompt("📲 Ingresa el número de referencia de la transacción en Nequi:");
+    if (!referencia || referencia.trim() === "") {
+      alert("⚠️ Debes ingresar el número de referencia para confirmar el pedido.");
+      return;
     }
-
+  } else if (metodo === "Bancolombia") {
+    referencia = prompt("🏦 Ingresa el número de baucher o referencia de la transacción en Bancolombia:");
     if (!referencia || referencia.trim() === "") {
       alert("⚠️ Debes ingresar el número de referencia para confirmar el pedido.");
       return;
@@ -282,9 +281,6 @@ function confirmarPedido() {
   }
   mensaje += `\n\nTotal: Cop. ${total.toFixed(3)}`;
 
-  alert("✅ Pedido confirmado:\n\n" + mensaje);
-}
-
   // Enviar por WhatsApp
   const url = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
   window.open(url, '_blank');
@@ -292,6 +288,7 @@ function confirmarPedido() {
     renderizarOrden();
 
   </script>
+
 
 
 
