@@ -140,8 +140,7 @@
       <select id="metodoPago" onchange="mostrarCuenta()">
         <option value="">💳 Selecciona método de pago</option>
         <option value="Nequi">Nequi</option>
-        <option value="Bancolombia">Bancolombia</option>
-        <option value="Movii">Movii</option>
+        <option value="Movii">efectivo</option>
       </select>
     </div>
   </div>
@@ -185,48 +184,23 @@
     }
 
     function mostrarCuenta() {
-      const metodo = document.getElementById('metodoPago').value;
-      const contenedor = document.getElementById('infoCuenta');
-      let contenido = "";
+  const metodo = document.getElementById('metodoPago').value;
+  const contenedor = document.getElementById('infoCuenta');
+  let contenido = "";
 
-      switch (metodo) {
-        case 'Nequi':
-          contenido = `
-            <div class="cuenta-info">
-              <strong>💰 Nequi</strong><br>
-              Número: <strong>3001234567</strong><br>
-              Titular: Juan Pérez<br>
-              Banco: Nequi Colombia<br>
-              Referencia: Tu número de pedido o nombre
-            </div>`;
-          break;
-        case 'Bancolombia':
-          contenido = `
-            <div class="cuenta-info">
-              <strong>🏦 Bancolombia</strong><br>
-              Cuenta de ahorros: <strong>12345678901</strong><br>
-              Titular: Juan Pérez<br>
-              Cédula: 12345678<br>
-              Banco: Bancolombia<br>
-              Referencia: Tu número de pedido o nombre
-            </div>`;
-          break;
-        case 'Movii':
-          contenido = `
-            <div class="cuenta-info">
-              <strong>📲 Movii</strong><br>
-              Número: <strong>3009876543</strong><br>
-              Titular: Juan Pérez<br>
-              Banco: Movii Colombia<br>
-              Referencia: Tu número de pedido o nombre
-            </div>`;
-          break;
-        default:
-          contenido = "";
-      }
+  if (metodo === 'Nequi') {
+    contenido = `
+      <div class="cuenta-info">
+        <strong>💰 Nequi</strong><br>
+        Número: <strong>3248088481</strong><br>
+        Titular: Jose Rodriguez<br>
+        Banco: Nequi Colombia<br>
+        Referencia: Número de transacción
+      </div>`;
+  }
 
-      contenedor.innerHTML = contenido;
-    }
+  contenedor.innerHTML = contenido;
+}
 
 function confirmarPedido() {
   const direccion = document.getElementById('direccion').value.trim();
@@ -281,4 +255,5 @@ function confirmarPedido() {
 
  renderizarOrden();
   </script>
+
 
