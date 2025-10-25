@@ -103,16 +103,6 @@
       color: white;
     }
 
-    .whatsapp {
-      background-color: #25d366;
-      color: white;
-    }
-
-    .telegram {
-      background-color: #0088cc;
-      color: white;
-    }
-
     .cuenta-info {
       margin-top: 20px;
       padding: 15px;
@@ -141,6 +131,7 @@
         <option value="">💳 Selecciona método de pago</option>
         <option value="Nequi">Nequi</option>
         <option value="Bancolombia">Bancolombia</option>
+        <option value="Movii">Movii</option>
         <option value="Efectivo">Efectivo</option>
       </select>
     </div>
@@ -197,7 +188,7 @@
               Número: <strong>3248088481</strong><br>
               Titular: Jose Rodriguez<br>
               Banco: Nequi Colombia<br>
-              Referencia:  N° del pago en Nequi
+              Referencia: N° del pago en Nequi
             </div>`;
           break;
         case 'Bancolombia':
@@ -228,68 +219,65 @@
       contenedor.innerHTML = contenido;
     }
 
-function confirmarPedido() {
-  const direccion = document.getElementById('direccion').value.trim();
-  const telefono = document.getElementById('telefono').value.trim();
-  const comentario = document.getElementById('comentario').value.trim();
-  const metodo = document.getElementById('metodoPago').value;
+    function confirmarPedido() {
+      const direccion = document.getElementById('direccion').value.trim();
+      const telefono = document.getElementById('telefono').value.trim();
+      const comentario = document.getElementById('comentario').value.trim();
+      const metodo = document.getElementById('metodoPago').value;
 
-  if (!direccion || !telefono || !metodo) {
-    alert("Por favor, completa la dirección, teléfono y método de pago.");
-    return;
-  }
+      if (!direccion || !telefono || !metodo) {
+        alert("Por favor, completa la dirección, teléfono y método de pago.");
+        return;
+      }
 
-  if (Object.keys(orden).length === 0) {
-    alert("Tu orden está vacía.");
-    return;
-  }
+      if (Object.keys(orden).length === 0) {
+        alert("Tu orden está vacía.");
+        return;
+      }
 
-  let referencia = "";
+      let referencia = "";
 
-  if (metodo === "Nequi") {
-    referencia = prompt("📲 Ingresa el número de referencia de la transacción en Nequi:");
-    if (!referencia || referencia.trim() === "") {
-      alert("⚠️ Debes ingresar el número de referencia para confirmar el pedido.");
-      return;
+      if (metodo === "Nequi") {
+        referencia = prompt("📲 Ingresa el número de referencia de la transacción en Nequi:");
+        if (!referencia || referencia.trim() === "") {
+          alert("⚠️ Debes ingresar el número de referencia para confirmar el pedido.");
+          return;
+        }
+      } else if (metodo === "Bancolombia") {
+        referencia = prompt("🏦 Ingresa el número de baucher o referencia de la transacción en Bancolombia:");
+        if (!referencia || referencia.trim() === "") {
+          alert("⚠️ Debes ingresar el número de referencia para confirmar el pedido.");
+          return;
+        }
+      }
+
+      let mensaje = "🧾 Mi orden:\n";
+      let total = 0;
+
+      for (const [nombre, item] of Object.entries(orden)) {
+        const subtotal = item.cantidad * item.precio;
+        total += subtotal;
+        mensaje += `• ${item.cantidad} x ${nombre} = Cop. ${subtotal.toFixed(3)}\n`;
+      }
+
+      mensaje += `\n💳 Método de pago: ${metodo}`;
+      if (metodo !== "Efectivo") {
+        mensaje += `\n🔢 Referencia: ${referencia}`;
+      }
+      mensaje += `\n📍 Dirección: ${direccion}`;
+      mensaje += `\n📞 Teléfono: ${telefono}`;
+      if (comentario) {
+        mensaje += `      if (comentario) {
+        mensaje += `\n💬 Comentario: ${comentario}`;
+      }
+      mensaje += `\n\nTotal: Cop. ${total.toFixed(3)}`;
+
+      // Enviar por WhatsApp
+      const url = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
+      window.open(url, '_blank');
     }
-  } else if (metodo === "Bancolombia") {
-    referencia = prompt("🏦 Ingresa el número de baucher o referencia de la transacción en Bancolombia:");
-    if (!referencia || referencia.trim() === "") {
-      alert("⚠️ Debes ingresar el número de referencia para confirmar el pedido.");
-      return;
-    }
-  }
 
-  // Construir el mensaje
-  let mensaje = "🧾 Mi orden:\n";
-  let total = 0;
-
-  for (const [nombre, item] of Object.entries(orden)) {
-    const subtotal = item.cantidad * item.precio;
-    total += subtotal;
-    mensaje += `• ${item.cantidad} x ${nombre} = Cop. ${subtotal.toFixed(3)}\n`;
-  }
-
-  mensaje += `\n💳 Método de pago: ${metodo}`;
-  if (metodo !== "Efectivo") {
-    mensaje += `\n🔢 Referencia: ${referencia}`;
-  }
-  mensaje += `\n📍 Dirección: ${direccion}`;
-  mensaje += `\n📞 Teléfono: ${telefono}`;
-  if (comentario) {
-    mensaje += `\n💬 Comentario: ${comentario}`;
-  }
-  mensaje += `\n\nTotal: Cop. ${total.toFixed(3)}`;
-
-  // Enviar por WhatsApp
-  const url = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
-  window.open(url, '_blank');
-}
     renderizarOrden();
-
   </script>
-
-
-
-
-
+</body>
+</html>
