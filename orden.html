@@ -267,17 +267,13 @@
       mensaje += `\n📍 Dirección: ${direccion}`;
       mensaje += `\n📞 Teléfono: ${telefono}`;
       if (comentario) {
-        mensaje += `      if (comentario) {
         mensaje += `\n💬 Comentario: ${comentario}`;
       }
       mensaje += `\n\nTotal: Cop. ${total.toFixed(3)}`;
 
-      // Enviar por WhatsApp
       const url = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
       window.open(url, '_blank');
     }
 
     renderizarOrden();
-  </script>
-</body>
-</html>
+ 
