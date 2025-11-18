@@ -216,6 +216,23 @@
       </div>
     </div>
     
+    <div class="producto">
+      <div class="notificacion">1</div>
+      <img src="./img/minirefresco.jpg" alt="Hamburguesa">
+      <div class="titulo">Refresco</div>
+      <div class="precio" data-precio="1.000">Cop. 1.000</div>
+      <div class="descripcion">400 Ml</div>
+      <div class="acciones">
+        <div class="contador">
+          <button onclick="cambiarCantidad(this, -1)">−</button>
+          <input type="text" class="cantidad" value="1" readonly>
+          <button onclick="cambiarCantidad(this, 1)">+</button>
+        </div>
+        <button class="btn-agregar" onclick="activarContador(this)">Agregar</button>
+      </div>
+    </div>
+
+    
   </div>
 
   <div class="ver-orden">
@@ -309,6 +326,7 @@ function verificarOrden() {
 
 </body>
 </html>
+
 
 
 
